@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  Gradle Build:
 
     runs-on: ubuntu-latest
     permissions:
@@ -27,3 +27,11 @@ jobs:
       run: |
         cd demo
         ./gradlew build
+
+    Create Dockerfile:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v3
+        - name: Build the Docker image
+          run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
