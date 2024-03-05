@@ -27,6 +27,12 @@ jobs:
       run: |
         cd demo
         ./gradlew build
+    - name: Push build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: gradle-artifact
+        path: ./demo/app/build/libs/app.jar
+        retention-days: 1
 
   create-dockerfile:
 
@@ -35,8 +41,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Retrieve gradle build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: gradle-artifact
+          path: .
       - name: Build the Docker image
         run: |
-          cd demo/app
-          ls
           docker build . --file Dockerfile --tag my-image-name:$(date +%s)
