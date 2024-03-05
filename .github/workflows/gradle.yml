@@ -30,7 +30,7 @@ jobs:
 
   create-dockerfile:
 
-    needs: gradle-guild
+    needs: gradle-build
     runs-on: ubuntu-latest
 
     steps:
