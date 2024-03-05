@@ -52,10 +52,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: debug...
-        run: ls
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: user/app:latest
+          context: .
