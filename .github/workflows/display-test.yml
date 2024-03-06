@@ -1,0 +1,20 @@
+name: Display test results
+on:
+  workflow_run:
+    workflows: ['Java CI with Gradle']                     # runs after CI workflow
+    types:
+      - completed
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results
+          name: JUnit Tests
+          path: '*.xml'
+          reporter: java-junit

@@ -31,13 +31,11 @@ jobs:
       run: |
         cd demo
         ./gradlew test
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
+    - name: Test result upload
+      uses: actions/upload-artifact@v4
       with:
-        name: JUnit 4 Tests
+        name: test-results
         path: ./demo/app/build/test-results/test/TEST-org.example.AppTest.xml
-        reporter: java-junit
     - name: Push build artifact
       uses: actions/upload-artifact@v4
       with:
