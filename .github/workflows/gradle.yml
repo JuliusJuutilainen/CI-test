@@ -84,7 +84,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: app
-          tags: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'latest' || 'v' + github.run_number }}
+          tags: ${{ github.run_number }}
 
 # there has to be a better way to do the action below, but I'm a newbie at gha so...
       - name: Build and push feature
