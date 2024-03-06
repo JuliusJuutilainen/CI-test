@@ -32,7 +32,7 @@ jobs:
         cd demo
         ./gradlew test
     - name: Push build artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: gradle-artifact
         path: ./demo/app/build/libs/app.jar
@@ -46,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Retrieve gradle build artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: gradle-artifact
           path: ./app.jar
