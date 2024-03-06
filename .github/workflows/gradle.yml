@@ -71,14 +71,25 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: results.sarif
+
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
-      - name: Build and push
+# there has to be a better way to do the action below, but I'm a newbie at gha so...
+      - name: Build and push feature
+        if: ${{ steps.extract_branch.outputs.BRANCH != 'main' }}
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/app:${{ steps.extract_branch.outputs.branch }}
+          tags: ghcr.io/juliusjuutilainen/app:${{ github.sha }}
+          context: .
+
+      - name: Build and push main
+        if: ${{ steps.extract_branch.outputs.BRANCH == 'main' }}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ghcr.io/juliusjuutilainen/app:latest
           context: .
