@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     # It's probably bad practice to hardcode this
     env:
-      MAJOR_VERSION: 1
+      MAJOR_VERSION: 2
     steps:
       - uses: actions/checkout@v4
       - name: Retrieve gradle build artifact
