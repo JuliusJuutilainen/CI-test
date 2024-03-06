@@ -77,3 +77,21 @@ jobs:
           push: true
           tags: ghcr.io/juliusjuutilainen/app:latest
           context: .
+  display-test-results:
+    permissions: read-all
+    needs: gradle-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download test results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: ./TEST-org.example.AppTest.xml
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Junit Tests            # Name of the check run which will be created
+          path: ./TEST-org.example.AppTest.xml   # Path to test results
+          reporter: java-junit
