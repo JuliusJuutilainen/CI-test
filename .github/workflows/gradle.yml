@@ -75,5 +75,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/app:latest
+          tags: ghcr.io/juliusjuutilainen/app:${GITHUB_REF##*/}
           context: .
