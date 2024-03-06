@@ -5,13 +5,13 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+permissions: read-all
 jobs:
   gradle-build:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read-all
+      contents: read
 
     steps:
     - uses: actions/checkout@v4
