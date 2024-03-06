@@ -79,13 +79,19 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+
 # there has to be a better way to do the action below, but I'm a newbie at gha so...
       - name: Build and push feature
         if: ${{ steps.extract_branch.outputs.BRANCH != 'main' }}
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/app:${{ github.sha }}
+          tags: ghcr.io/juliusjuutilainen/app:${{ steps.meta.outputs.tags }}
           context: .
 
       - name: Build and push main
