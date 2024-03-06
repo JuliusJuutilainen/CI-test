@@ -99,5 +99,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: [ghcr.io/juliusjuutilainen/app:latest, ghcr.io/juliusjuutilainen/app:${{ steps.meta.outputs.tags }}]
+          tags: ghcr.io/juliusjuutilainen/app:latest
           context: .
