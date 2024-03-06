@@ -28,7 +28,9 @@ jobs:
         cd demo
         ./gradlew build
     - name: Run tests
-      run: ./gradlew test
+      run: |
+        cd demo
+        ./gradlew test
     - name: Push build artifact
       uses: actions/upload-artifact@v2
       with:
