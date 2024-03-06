@@ -71,9 +71,14 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: results.sarif
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/app:${GITHUB_REF##*/}
+          tags: ghcr.io/juliusjuutilainen/app:${{ steps.extract_branch.outputs.branch }}
           context: .
