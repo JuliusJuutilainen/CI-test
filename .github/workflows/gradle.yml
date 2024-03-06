@@ -49,7 +49,9 @@ jobs:
     permissions: write-all
     needs: gradle-build
     runs-on: ubuntu-latest
-
+    # It's probably bad practice to hardcode this
+    env:
+      MAJOR_VERSION: 1
     steps:
       - uses: actions/checkout@v4
       - name: Retrieve gradle build artifact
@@ -79,19 +81,16 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: app
-          tags: ${{ github.run_number }}
+      - name: Set version
+        id: set_version
+        run: echo "tag=v${{ env.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
 
 # there has to be a better way to do the action below, but I'm a newbie at gha so...
       - name: Build and push feature
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/juliusjuutilainen/${{ steps.set_version.outputs.tag }}
           context: .
 
       - name: Build and push main
