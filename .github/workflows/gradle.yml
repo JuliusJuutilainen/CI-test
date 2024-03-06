@@ -31,6 +31,13 @@ jobs:
       run: |
         cd demo
         ./gradlew test
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: JUnit 4 Tests
+        path: ./demo/app/build/test-results/test/TEST-org.example.AppTest.xml
+        reporter: java-junit
     - name: Push build artifact
       uses: actions/upload-artifact@v4
       with:
@@ -56,6 +63,16 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkov Scan for Dockerfile
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          output_format: cli,sarif
+          output_file_path: console,results.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: results.sarif
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
