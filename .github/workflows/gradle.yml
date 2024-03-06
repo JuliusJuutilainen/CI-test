@@ -94,5 +94,5 @@ jobs:
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: Junit Tests            # Name of the check run which will be created
-          path: ./TEST-org.example.AppTest.xml   # Path to test results
+          path: ./*.xml   # Path to test results
           reporter: java-junit
