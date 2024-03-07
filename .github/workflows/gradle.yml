@@ -93,14 +93,17 @@ jobs:
         with:
           version: ${{ steps.previoustag.outputs.tag }}
 
-      - name: Create release
-        id: create_release_id
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create tag
+        uses: actions/github-script@v5
         with:
-          tag_name: ${{ steps.semvers.outputs.patch }}
-          release_name: Release v${{ steps.semvers.outputs.patch }}
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.semvers.outputs.patch }}',
+              sha: context.sha
+            })
+
 
 # there has to be a better way to do the action below, but I'm a newbie at gha so...
       - name: Build and push feature
@@ -109,6 +112,17 @@ jobs:
           push: true
           tags: ghcr.io/juliusjuutilainen/app:v${{ steps.semvers.outputs.patch }}
           context: .
+
+# For main-branch changes. This should not be updated directly... :D
+      - name: Create release
+        if: ${{ steps.extract_branch.outputs.BRANCH == 'main' }}
+        id: create_release_id
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.semvers.outputs.patch }}
+          release_name: Release v${{ steps.semvers.outputs.patch }}
 
       - name: Build and push main
         if: ${{ steps.extract_branch.outputs.BRANCH == 'main' }}
