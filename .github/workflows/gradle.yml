@@ -100,7 +100,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/app:${{ steps.semvers.outputs.patch }}
+          tags: ghcr.io/juliusjuutilainen/app:v${{ steps.semvers.outputs.patch }}
           context: .
 
       - name: Build and push main
