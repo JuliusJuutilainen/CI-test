@@ -49,27 +49,30 @@ jobs:
     permissions: write-all
     needs: gradle-build
     runs-on: ubuntu-latest
-    # It's probably bad practice to hardcode this
-    env:
-      MAJOR_VERSION: 2
     steps:
       - uses: actions/checkout@v4
+        with:
+          with:
+            fetch-depth: 0
       - name: Retrieve gradle build artifact
         uses: actions/download-artifact@v4
         with:
           name: gradle-artifact
           path: ./app.jar
+
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkov Scan for Dockerfile
         uses: bridgecrewio/checkov-action@v12
         with:
           output_format: cli,sarif
           output_file_path: console,results.sarif
+
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         if: success() || failure()
@@ -81,16 +84,24 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
-      - name: Set version
-        id: set_version
-        run: echo "tag=v${{ env.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
 
 # there has to be a better way to do the action below, but I'm a newbie at gha so...
       - name: Build and push feature
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/juliusjuutilainen/app:${{ steps.set_version.outputs.tag }}
+          tags: ghcr.io/juliusjuutilainen/app:${{ steps.semvers.outputs.patch }}
           context: .
 
       - name: Build and push main
