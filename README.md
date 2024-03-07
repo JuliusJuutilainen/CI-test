@@ -7,6 +7,9 @@ Findings:
 
 TODO:
 - nothing currently needs to be done here. Test succesful.
+- Fine tuning:
+  - only build/update when application files have been changed
+  - Changing main/master branch should create new medium/major release tag...
 
 Notes:
 - This is a test repo. The app should only print "Hello World"
