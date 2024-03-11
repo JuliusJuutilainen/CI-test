@@ -6,7 +6,7 @@ orbs:
 jobs:
   build-java-application:
     docker:
-      - image: cimg/base:stable
+      - image: gradle:7.5-jdk17-alpine
     steps:
       - checkout
       - run: |
