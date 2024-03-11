@@ -4,7 +4,7 @@ orbs:
   node: circleci/gradle@3.0.0
 
 jobs:
-  install-node-example:
+  build-java-application:
     docker:
       - image: cimg/base:stable
     steps:
@@ -12,3 +12,8 @@ jobs:
       - run: |
           cd demo
           ./gradlew build
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-java-application
