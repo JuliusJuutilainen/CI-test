@@ -16,4 +16,4 @@ Notes:
 - Only supporting minor version bumps currently. I think the market options for something that does semver automatically are far and wide between. Might be worth it to code my own solution. (One action fits all kinda thing)
 - This repo was a learning exercise. Don't look at the commits too much :D
 
-test 2
+trigger pipeline
