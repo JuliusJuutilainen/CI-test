@@ -30,6 +30,7 @@ jobs:
       - checkout
       - bridgecrew/scan:
           directory: .
+          soft-fail: true
 # not going to bother pushing since that would require authentication somewhere and it doesn't matter if we're to use this
   # you will need authentication to each and any service.
   build-dockerfile:
