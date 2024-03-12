@@ -13,11 +13,17 @@ jobs:
       - run: |
           cd demo
           ./gradlew build
-          ./gradlew test
       - persist_to_workspace:
           root: .
           paths:
             - .
+  test-java-application:
+    executor: gradle/default
+    steps:
+      - checkout
+      - run: |
+          cd demo
+          ./gradlew test
   scan-dockerfile:
     executor: bridgecrew/default
     steps:
@@ -34,6 +40,7 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
+          cp /demo/app/build/libs/app.jar ./app.jar
           docker build -t ghcr.io/juliusjuutilainen/app:circleci .
 
 workflows:
@@ -41,6 +48,7 @@ workflows:
     jobs:
       - build-java-application
       - scan-dockerfile
+      - test-java-application
       - build-dockerfile:
           requires:
             - build-java-application
