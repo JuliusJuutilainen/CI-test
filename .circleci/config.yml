@@ -41,7 +41,7 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          cp /demo/app/build/libs/app.jar ./app.jar
+          cp ./demo/app/build/libs/app.jar ./app.jar
           docker build -t ghcr.io/juliusjuutilainen/app:circleci .
 
 workflows:
