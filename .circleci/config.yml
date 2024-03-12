@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   gradle: circleci/gradle@3.0.0
-  docker: circleci/docker@2.5.0
   # bridgecrew = checkov
   bridgecrew: bridgecrew/bridgecrew@1.0.5
 
@@ -28,12 +27,13 @@ jobs:
 # not going to bother pushing since that would require authentication somewhere and it doesn't matter if we're to use this
   # you will need authentication to each and any service.
   build-dockerfile:
-    executor: docker/docker
+    docker:
+      - image: cimg/base:2022.09
     steps:
       - attach_workspace:
           at: .
-      - docker/build:
-          image: ghcr.io/juliusjuutilainen/app
+      - run: |
+          docker build -t ghcr.io/juliusjuutilainen/app:circleci .
 
 workflows:
   build-and-test:
