@@ -16,9 +16,10 @@ jobs:
           ./gradlew build
           ./gradlew test
       - persist_to_workspace:
-          root: .
+          root: ./
           paths:
-            - .
+            - demo
+            - Dockerfile
   scan-dockerfile:
     executor: bridgecrew/default
     steps:
@@ -31,7 +32,7 @@ jobs:
     executor: docker/docker
     steps:
       - attach_workspace:
-          at: .
+          at: ./
       - run: |
           ls
           docker build -t ghcr.io/juliusjuutilainen/app:circleci .
