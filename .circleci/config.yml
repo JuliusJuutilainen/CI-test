@@ -16,10 +16,9 @@ jobs:
           ./gradlew build
           ./gradlew test
       - persist_to_workspace:
-          root: ./
+          root: .
           paths:
-            - demo
-            - Dockerfile
+            - .
   scan-dockerfile:
     executor: bridgecrew/default
     steps:
@@ -30,9 +29,11 @@ jobs:
   # you will need authentication to each and any service.
   build-dockerfile:
     executor: docker/docker
+    requires:
+      - build-java-application
     steps:
       - attach_workspace:
-          at: ./
+          at: .
       - run: |
           ls
           docker build -t ghcr.io/juliusjuutilainen/app:circleci .
