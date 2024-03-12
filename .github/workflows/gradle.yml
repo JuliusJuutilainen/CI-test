@@ -115,7 +115,7 @@ jobs:
 
 # For main-branch changes. This should not be updated directly... :D
       - name: Create release
-        if: ${{ steps.extract_branch.outputs.BRANCH == 'main' }}
+        if: ${{ steps.extract_branch.outputs.BRANCH == 'master' }}
         id: create_release_id
         uses: actions/create-release@v1
         env:
