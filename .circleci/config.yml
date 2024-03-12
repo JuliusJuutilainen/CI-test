@@ -32,8 +32,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - docker/publish:
-          deploy: false
+      - docker/build:
           image: ghcr.io/juliusjuutilainen/app
           tag: circleci
 
