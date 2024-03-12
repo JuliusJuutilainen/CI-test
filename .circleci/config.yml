@@ -2,6 +2,8 @@ version: 2.1
 
 orbs:
   gradle: circleci/gradle@3.0.0
+  docker: circleci/docker@2.5.0
+  checkov: bridgecrew/bridgecrew@1.0.5
 
 jobs:
   build-java-application:
@@ -12,8 +14,29 @@ jobs:
           cd demo
           ./gradlew build
           ./gradlew test
+      - persist_to_workspace:
+          root: .
+          paths:
+            - demo
+  scan-dockerfile:
+    executor: checkov/default
+    steps:
+      - checkout
+      - bridgecrew/scan:
+          directory: .
+# not going to bother pushing since that would require authentication somewhere and it doesn't matter if we're to use this
+  # you will need authentication to each and any service.
+  build-dockerfile:
+    executor: docker/default
+    steps:
+      - attach_workspace:
+          at: ./demo
+      - run: |
+          docker build -t ghcr.io/juliusjuutilainen/app:circleci .
 
 workflows:
   build-and-test:
     jobs:
       - build-java-application
+      - scan-dockerfile
+      - build-dockerfile
