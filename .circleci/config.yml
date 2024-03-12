@@ -29,8 +29,6 @@ jobs:
   # you will need authentication to each and any service.
   build-dockerfile:
     executor: docker/docker
-    requires:
-      - build-java-application
     steps:
       - attach_workspace:
           at: .
@@ -43,4 +41,7 @@ workflows:
     jobs:
       - build-java-application
       - scan-dockerfile
-      - build-dockerfile
+      - build-dockerfile:
+          requires:
+            - build-java-application
+
