@@ -11,8 +11,24 @@ jobs:
       - run: |
           cd demo
           ./gradlew build
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - echo-output
+
+  test-java-application:
+      executor: gradle/default
+      steps:
+        - attach_workspace:
+            at: /tmp/workspace
+        - run: |
+            cd demo
+            ./gradlew test
+            
+
 
 workflows:
   build-and-test:
     jobs:
       - build-java-application
+      - test-java-application
