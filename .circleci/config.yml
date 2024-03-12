@@ -30,6 +30,7 @@ jobs:
     docker:
       - image: cimg/base:2022.09
     steps:
+      - setup_remote_docker
       - attach_workspace:
           at: .
       - run: |
