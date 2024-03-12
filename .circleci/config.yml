@@ -34,7 +34,6 @@ jobs:
           at: .
       - docker/build:
           image: ghcr.io/juliusjuutilainen/app
-          tag: circleci
 
 workflows:
   build-and-test:
