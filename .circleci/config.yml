@@ -31,10 +31,9 @@ jobs:
     executor: docker/docker
     steps:
       - attach_workspace:
-          at: ./demo
+          at: .
       - run: |
           ls
-          cd demo
           docker build -t ghcr.io/juliusjuutilainen/app:circleci .
 
 workflows:
