@@ -14,15 +14,14 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - echo-output
+            - demo
 
   test-java-application:
       executor: gradle/default
       steps:
         - attach_workspace:
-            at: .
+            at: ./demo
         - run: |
-            cd demo
             ./gradlew test
             
 
