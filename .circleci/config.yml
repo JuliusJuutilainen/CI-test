@@ -12,7 +12,7 @@ jobs:
           cd demo
           ./gradlew build
       - persist_to_workspace:
-          root: workspace
+          root: demo
           paths:
             - echo-output
 
@@ -20,7 +20,7 @@ jobs:
       executor: gradle/default
       steps:
         - attach_workspace:
-            at: /tmp/workspace
+            at: /tmp/demo
         - run: |
             cd demo
             ./gradlew test
