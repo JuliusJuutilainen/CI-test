@@ -3,7 +3,8 @@ version: 2.1
 orbs:
   gradle: circleci/gradle@3.0.0
   docker: circleci/docker@2.5.0
-  checkov: bridgecrew/bridgecrew@1.0.5
+  # bridgecrew = checkov
+  bridgecrew: bridgecrew/bridgecrew@1.0.5
 
 jobs:
   build-java-application:
@@ -19,7 +20,7 @@ jobs:
           paths:
             - demo
   scan-dockerfile:
-    executor: checkov/default
+    executor: bridgecrew/default
     steps:
       - checkout
       - bridgecrew/scan:
