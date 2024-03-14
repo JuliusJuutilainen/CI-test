@@ -1,13 +1,14 @@
 name: Inputs test
-
-inputs:
-  num-ber-test:
-    description: 'Number'
-    required: false
-    default: '1'
-  string-test:
-    description: 'a string'
-    required: true
+on:
+  workflow_call:
+    inputs:
+      num-ber-test:
+        description: 'Number'
+        required: false
+        default: '1'
+      string-test:
+        description: 'a string'
+        required: true
 
 permissions: read-all
 
