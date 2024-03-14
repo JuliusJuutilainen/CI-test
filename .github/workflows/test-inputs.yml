@@ -1,3 +1,5 @@
+name: Inputs test
+
 inputs:
   num-ber-test:
     description: 'Number'
