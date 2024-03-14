@@ -1,6 +1,6 @@
 name: Inputs test
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       num-ber-test:
         description: 'Number'
