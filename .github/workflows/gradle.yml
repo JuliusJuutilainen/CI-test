@@ -1,14 +1,5 @@
 name: Java CI with Gradle
 
-inputs:
-  num-ber-test:
-    description: 'Number'
-    required: false
-    default: '1'
-  string-test:
-    description: 'a string'
-    required: true
-
 on:
   push:
     branches:
@@ -19,7 +10,14 @@ on:
 permissions: read-all
 jobs:
   gradle-build:
-
+    inputs:
+      num-ber-test:
+        description: 'Number'
+        required: false
+        default: '1'
+      string-test:
+        description: 'a string'
+        required: true
     runs-on: ubuntu-latest
     permissions:
       contents: read
