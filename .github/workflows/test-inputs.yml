@@ -1,0 +1,47 @@
+inputs:
+  num-ber-test:
+    description: 'Number'
+    required: false
+    default: '1'
+  string-test:
+    description: 'a string'
+    required: true
+
+permissions: read-all
+
+jobs:
+  gradle-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+      - name: Build with Gradle Wrapper
+        run: |
+          cd demo
+          ./gradlew build
+      - name: Run tests
+        run: |
+          cd demo
+          ./gradlew test
+      - name: Test result upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./demo/app/build/test-results/test/TEST-org.example.AppTest.xml
+      - name: Push build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-artifact
+          path: ./demo/app/build/libs/app.jar
+          retention-days: 1
+
