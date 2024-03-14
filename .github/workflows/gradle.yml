@@ -1,5 +1,14 @@
 name: Java CI with Gradle
 
+inputs:
+  num-ber-test:
+    description: 'Number'
+    required: false
+    default: '1'
+  string-test:
+    description: 'a string'
+    required: true
+
 on:
   push:
     branches:
