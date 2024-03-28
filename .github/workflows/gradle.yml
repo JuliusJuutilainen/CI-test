@@ -103,8 +103,6 @@ jobs:
               sha: context.sha
             })
 
-
-# there has to be a better way to do the action below, but I'm a newbie at gha so...
       - name: Build and push feature
         uses: docker/build-push-action@v5
         with:
@@ -112,7 +110,7 @@ jobs:
           tags: ghcr.io/juliusjuutilainen/app:v${{ steps.semvers.outputs.patch }}
           context: .
 
-# For main-branch changes. This should not be updated directly... :D
+# For main-branch changes. This should not be updated directly...
       - name: Create release
         if: ${{ steps.extract_branch.outputs.BRANCH == 'master' }}
         id: create_release_id
